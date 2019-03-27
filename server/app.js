@@ -4,6 +4,10 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var cors = require('cors');
+var favicon = require('serve-favicon');
+var bodyParser = require('body-parser');
+var mongoose = require('mongoose');
+mongoose.Promise = global.Promise;
 
 
 var indexRouter = require('./routes/index');
@@ -23,6 +27,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
+
+mongoose.connect('mongodb://localhost:27017/Twilio')
+  .then(() =>  console.log('connection succesful'))
+  .catch((err) => console.error(err));
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
